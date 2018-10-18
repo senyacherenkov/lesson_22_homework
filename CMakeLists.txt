@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(bulk_async VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-
 set(CMAKE_BUILD_TYPE DEBUG)
 
 add_library(async SHARED async.h async.cpp observer.h observer.cpp subject.h subject.cpp utility.h utility.cpp manager.h manager.cpp)
