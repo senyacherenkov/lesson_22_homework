@@ -29,6 +29,7 @@ handle_t Manager::start(size_t N)
     }
 
    if(!m_freeContextIDs.empty()) {
+       std::lock_guard<std::mutex> guard{m_mutex};
        size_t temp = m_freeContextIDs.front();
        m_freeContextIDs.pop();
        return temp;
