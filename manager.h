@@ -12,8 +12,6 @@
 #include "subject.h"
 #include "utility.h"
 
-using handle_t = size_t;
-
 struct Context {
     Context() = default;
     Context(size_t N):
@@ -32,18 +30,11 @@ public:
         Manager();
         ~Manager();
 
-        static Manager* getInstance();
+        static Manager& getInstance();
 
-        handle_t start(size_t N);
-        void work(handle_t handle, const char *data, std::size_t size);
-        void stop(handle_t handle);
-
-#ifdef TEST_MODE
-        std::vector<std::string> m_testDataFileList;
-#endif
-
-private:
-        std::vector<std::string> parseData(std::string);
+        size_t start(size_t N);
+        void work(size_t handle, const char *data, std::size_t size);
+        void stop(size_t handle);
 
 private:
 

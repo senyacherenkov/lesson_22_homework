@@ -35,7 +35,7 @@ public:
 
     ~Reader() = default;
 
-    void readCommands(std::string& input);
+    void readCommands(const std::string &input);
     void setCommandNumber(size_t N) { m_N = N; }
 
     ThreadData& getThreadData() { return m_threadData; }

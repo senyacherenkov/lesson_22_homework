@@ -36,17 +36,15 @@ void Subject::removeObserver(std::shared_ptr<Observer> observer)
         m_observers.erase(it);
 }
 
-void Reader::readCommands(std::string &input)
+void Reader::readCommands(const std::string& input)
 {
-    std::string temp = input;
-
-    if(!temp.empty())
+    if(!input.empty())
     {
         m_threadData.m_nStrings++;
         if(m_commands.empty())
             m_timeOfFirstCommand = get_seconds_since_epoch();
 
-        if(temp == "}") {
+        if(input == "}") {
             m_closeBracketNumber++;
             if(m_dynamicMode && !m_commands.empty() && (m_closeBracketNumber == m_openBracketNumber)) {
                 m_threadData.m_nBlocks++;
@@ -57,7 +55,7 @@ void Reader::readCommands(std::string &input)
             }
             return;
         }
-        if(temp == "{") {
+        if(input == "{") {
             m_openBracketNumber++;
             if(!m_dynamicMode) {
                 m_commands.clear();
@@ -66,7 +64,7 @@ void Reader::readCommands(std::string &input)
             return;
         }
 
-        m_commands.push_back(temp);
+        m_commands.push_back(input);
         if(!m_dynamicMode && m_commands.size() == m_N) {
            notifyObservers();
            m_threadData.m_nBlocks++;
@@ -88,7 +86,7 @@ void Reader::readCommands(std::string &input)
     }
 
 
-    if(temp.empty())
+    if(input.empty())
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         std::cout << "main " << m_threadData;        

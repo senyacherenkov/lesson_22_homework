@@ -1,8 +1,7 @@
 #pragma once
-
 #include <cstddef>
-#include "manager.h"
 
+using handle_t = size_t;
 
 namespace async {
 

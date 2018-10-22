@@ -12,7 +12,7 @@ Registrator::Registrator():
         m_workers.emplace_back(
                     [this, i]
                         {
-                            thread_local ThreadData threadData;
+                            ThreadData threadData;
 
                             while (!m_isStopped.load(std::memory_order_relaxed)) {
 
@@ -86,7 +86,7 @@ std::string Registrator::prepareData(const std::vector<std::string>& newCommands
 
 void Registrator::writeStdOuput()
 {
-    thread_local ThreadData threadData;
+    ThreadData threadData;
 
     while (!m_isStopped.load(std::memory_order_relaxed)) {
 
