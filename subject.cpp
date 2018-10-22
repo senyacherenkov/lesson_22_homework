@@ -23,12 +23,12 @@ namespace  {
 Subject::~Subject()
 {}
 
-void Subject::addObserver(std::shared_ptr<Observer> observer)
+void Subject::addObserver(const std::shared_ptr<Observer> &observer)
 {
     m_observers.push_back(observer);
 }
 
-void Subject::removeObserver(std::shared_ptr<Observer> observer)
+void Subject::removeObserver(const std::shared_ptr<Observer> &observer)
 {
     auto it = std::find(m_observers.begin(), m_observers.end(), observer);
 

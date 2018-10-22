@@ -14,9 +14,9 @@ public:
     Subject() = default;
     virtual ~Subject();
 
-    void addObserver(std::shared_ptr<Observer> observer);
+    void addObserver(const std::shared_ptr<Observer>& observer);
 
-    void removeObserver(std::shared_ptr<Observer> observer);
+    void removeObserver(const std::shared_ptr<Observer>& observer);
 
     virtual void notifyObservers() = 0;
 
