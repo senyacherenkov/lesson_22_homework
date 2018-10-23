@@ -7,6 +7,7 @@
 #include <map>
 #include <queue>
 #include <cassert>
+#include <list>
 
 #include "observer.h"
 #include "subject.h"
@@ -41,6 +42,6 @@ private:
         std::mutex              m_mutex;
         static Manager*         m_instance;
 
-        std::vector<Context>    m_contexts;
+        std::list<Context>      m_contexts;
         std::queue<size_t>      m_freeContextIDs;
 };

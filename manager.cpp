@@ -27,7 +27,7 @@ size_t Manager::start(size_t N)
        size_t temp = m_freeContextIDs.front();
        m_freeContextIDs.pop();
 
-       m_contexts.at(temp) = data;
+       *(std::next(m_contexts.begin(), static_cast<long>(temp))) = data;
        return temp;
    }
 
@@ -43,19 +43,19 @@ void Manager::work(size_t handle, const char *data, std::size_t size)
     assert(handle <= m_contexts.size());
     std::unique_lock<std::mutex> guard{m_mutex};
     std::string commands = std::string(data, size);
-    m_contexts.at(handle).m_data += commands;
+    std::next(m_contexts.begin(), static_cast<long>(handle))->m_data += commands;
 
     if(commands[commands.size() - 1] == escChar)
     {
-        m_contexts.at(handle).m_isValid = true;
+        std::next(m_contexts.begin(), static_cast<long>(handle))->m_isValid = true;
 
         guard.unlock();
-        auto preparedData = parseData(m_contexts.at(handle).m_data);
+        auto preparedData = parseData(std::next(m_contexts.begin(), static_cast<long>(handle))->m_data);
         for(auto& command: preparedData)
-            m_contexts.at(handle).m_reader.readCommands(command);
+            std::next(m_contexts.begin(), static_cast<long>(handle))->m_reader.readCommands(command);
 
         guard.lock();
-        m_contexts.at(handle).m_data.clear();
+        std::next(m_contexts.begin(), static_cast<long>(handle))->m_data.clear();
     }
 }
 
@@ -63,7 +63,7 @@ void Manager::stop(size_t handle)
 {
     std::lock_guard<std::mutex> guard{m_mutex};
     std::string stopStr("");
-    m_contexts.at(handle).m_reader.readCommands(stopStr);
-    m_contexts.at(handle) = Context();
+    std::next(m_contexts.begin(), static_cast<long>(handle))->m_reader.readCommands(stopStr);
+    *(std::next(m_contexts.begin(), static_cast<long>(handle))) = Context();
     m_freeContextIDs.push(handle);
 }
