@@ -44,15 +44,16 @@ void Manager::work(size_t handle, const char *data, std::size_t size)
     std::unique_lock<std::mutex> guard{m_mutex};
     std::string commands = std::string(data, size);
     m_contexts.at(handle).m_data += commands;
-    guard.unlock();
 
     if(commands[commands.size() - 1] == escChar)
     {
         m_contexts.at(handle).m_isValid = true;
 
+        guard.unlock();
         auto preparedData = parseData(m_contexts.at(handle).m_data);
         for(auto& command: preparedData)
             m_contexts.at(handle).m_reader.readCommands(command);
+
         guard.lock();
         m_contexts.at(handle).m_data.clear();
     }

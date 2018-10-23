@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
+if(NOT DEFINED $ENV{TRAVIS_BUILD_NUMBER})
+        set(ENV{TRAVIS_BUILD_NUMBER} "0")
+endif()
+
 project(bulk_async VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 
 set(CMAKE_BUILD_TYPE DEBUG)

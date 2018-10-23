@@ -47,6 +47,8 @@ Registrator::Registrator():
                                 threadData.m_nCommands += nCommands;
                             }
                             m_threadDataBuff[i] = threadData;
+
+                            std::unique_lock<std::mutex> lck{m_fileMutex};
                             printSummary(threadData);
                         });
 
@@ -101,9 +103,8 @@ void Registrator::writeStdOuput()
         auto pair = m_stdOutQueue.front();
         m_stdOutQueue.pop();
 
-        lck.unlock();
-
         std::cout << pair.first << std::endl;        
+        lck.unlock();
 
         threadData.m_nBlocks++;
         threadData.m_nCommands += pair.second;
@@ -122,6 +123,8 @@ void Registrator::writeStdOuput()
     }
 
     m_threadDataBuff[2] = threadData;
+
+    std::unique_lock<std::mutex> lck{m_fileMutex};
     printSummary(threadData);
 }
 
